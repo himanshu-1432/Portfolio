@@ -76,7 +76,7 @@ export default function CLI({ onClose }: CLIProps) {
     <div className="w-3 h-3 bg-red-400/80 rounded-full mr-2"></div>
     <div className="w-3 h-3 bg-yellow-400/80 rounded-full mr-2"></div>
     <div className="w-3 h-3 bg-green-400/80 rounded-full mr-4"></div>
-    <span className="text-gray-200/80 text-xs tracking-wider">AI@himanshu:~$</span>
+    <span className="text-gray-200/80 text-xs tracking-wider">{`AI@himanshu(Full Stack Engineer):~$`}</span>
   </div>
 
   {/* Close button */}

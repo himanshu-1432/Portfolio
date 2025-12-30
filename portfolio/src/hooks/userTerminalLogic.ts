@@ -42,29 +42,41 @@ export function userTerminalLogic() {
     }
 
     // --- AI Mode (backend call) ---
-    setHistory((prev) => [...prev, { command: cmd, output: "🤖 Thinking..." }]);
-    setInput("");
+    // setHistory((prev) => [...prev, { command: cmd, output: "🤖 Thinking..." }]);
+    // setInput("");
 
-    try {
-      const aiResponse = await askOpenAI(trimmed);
+  try {
+  let output = "";
 
-      setHistory((prev) =>
-        prev.map((item, i) =>
-          i === prev.length - 1
-            ? { ...item, output: aiResponse }
-            : item
-        )
-      );
-    } catch (error) {
-      console.error("AI error:", error);
-      setHistory((prev) =>
-        prev.map((item, i) =>
-          i === prev.length - 1
-            ? { ...item, output: "❌ Failed to connect to AI server." }
-            : item
-        )
-      );
-    }
+  // Create an empty output slot first
+  setHistory((prev) => [
+    ...prev,
+    { command: trimmed, output: "" }
+  ]);
+
+  await askOpenAI(trimmed, (token) => {
+    output += token;
+
+    setHistory((prev) =>
+      prev.map((item, i) =>
+        i === prev.length - 1
+          ? { ...item, output }
+          : item
+      )
+    );
+  });
+
+} catch (error) {
+  console.error("AI error:", error);
+  setHistory((prev) =>
+    prev.map((item, i) =>
+      i === prev.length - 1
+        ? { ...item, output: "❌ Failed to connect to AI server." }
+        : item
+    )
+  );
+}
+
   };
 
   return { input, setInput, history, handleCommand };
